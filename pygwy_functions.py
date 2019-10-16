@@ -92,7 +92,27 @@ def get_data_key(_id=0):
     '''
     return os.path.join(os.sep, str(_id), 'data')
 
-def get_mask_key(_id):
+def get_gaussian_sigma():
+    '''
+    Convenience function that gets the gaussian sigma value from the filters toolbox setting.
+
+    Size (FWHM) relates to sigma as FWHM = 2*sqrt(2*ln(2)) * sigma.
+
+    Returns
+    -------
+    sigma: float
+        Standard deviation of gaussian kernel.
+
+    '''
+
+    settings = gwy.gwy_app_settings_get()
+    # get sigma from settings, ie. vlaue last used in toolbox->filters
+    size = settings['/module/filter/gauss_size']
+    # size (FWHM) relates to sigma as FWHM = 2*sqrt(2*ln(2)) * sigma
+    return size / (2.*math.sqrt(2.*math.log(2.)))
+
+
+def get_mask_key(_id=0):
     '''
     Convenience function to get mask key string.
 
