@@ -16,8 +16,9 @@ plugin_desc = '''Batch gaussian filter for all open containers. Sigma is as set 
 def run():
     # stored app settings
     settings = gwy.gwy_app_settings_get()
-    # get sigma from settings, ie. vlaue last used in toolbox->filters
+    # get gauss size from settings, ie. value last used in toolbox->filters
     size = settings['/module/filter/gauss_size']
+    # sigma relates to size as size (FWHM) = 2*sqrt(2*ln(2))*sigma
     sigma = size / (2.*math.sqrt(2.*math.log(2.)))
     # get all containers
     containers = gwy.gwy_app_data_browser_get_containers()
