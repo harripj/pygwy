@@ -602,6 +602,37 @@ def threshold_otsu_median(datafield, pts=256):
 
     return threshold
 
+def low_signal_threshold(container, _id=0):
+    '''
+
+    Creates a grain mask by blurring the image and then doing Otsu\'s power scaled threshold.
+    The gaussian filtered image is added to the container.
+
+    Parameters
+    ----------
+    container: gwy.container
+    _id: int
+        Key of data in container to process.
+
+    '''
+    # get sigma from settings, ie. value last used in toolbox->filters
+    sigma = get_gaussian_sigma()
+    # create undo point
+    gwy.gwy_app_undo_checkpoint(container, container.keys_by_name())
+    # get datafield 0 for each container for func to operate on
+    data = container[get_data_key(_id)]
+    # create new blurred data
+    blurred = data.duplicate()
+    # do gaussian filter
+    blurred.filter_gaussian(sigma)
+    # add to container
+    gwy.gwy_app_data_browser_add_data_field(blurred, container, False)
+    # create grain mask
+    grains = threshold_otsu_power(blurred)
+    # add grain field to container and set mask colour
+    container.set_object_by_name(get_mask_key(_id), grains)
+    set_mask_colour(container, _id)
+
 def analyse_particles_otsu_median(container, datafield_id=0, filter_size=5,
                            save=False):
     '''
