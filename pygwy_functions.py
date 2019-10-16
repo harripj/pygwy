@@ -571,6 +571,58 @@ def threshold_otsu_median(datafield, pts=256):
     # compute z-scale histogram from image
     datafield.dh(dl, pts)
 
+    # sort all intensity values
+    vals = sorted(datafield.get_data())
+
+    # sort out hist data
+    dx = dl.get_real()/dl.get_res() # pixel spacing in data line
+    offset = dl.get_offset() # dataline offset, ie. 0 index point value in x
+    x = [(i*dx)+offset for i in range(pts)] # construct bin locations
+
+    # calculate weights (CDF)
+    cdf = gwy.DataLine(pts, 0, True)
+    datafield.cdh(cdf, pts)
+    weight1 = [int(round(i*len(vals))) for i in cdf.get_data()] # get cdf data as list
+    weight2 = [max(weight1)-c for c in weight1[::-1]][::-1]
+
+    # class medians for all possible thresholds
+    median1 = [vals[:weight1[i]][weight1[i]//2] for i in range(0, pts-1)]
+    median2 = [vals[weight1[i-1]:][(len(vals)-weight1[i-1])//2] for i in range(1, pts)]
+
+    # median for whole image
+    medianT = datafield.get_median()
+
+    # Clip ends to align class 1 and class 2 variables:
+    # The last value of `weight1`/`mean1` should pair with zero values in
+    # `weight2`/`mean2`, which do not exist.
+    variance = [weight1[i]*(median1[i]-medianT)**2 + weight2[i+1]*(median2[i]-medianT)**2 \
+                for i in range(pts-1)]
+    # get index of maximum variance to index x array
+    threshold = x[:-1][variance.index(max(variance))]
+    
+    return threshold
+
+def threshold_otsu_mode(datafield, pts=256):
+    '''
+    Compute Otsu's threshold with median classifier (histogram mode).
+
+    Parameters
+    ----------
+    datafield: gwy.DataField
+        Datafield over which threshold will be computed.
+    pts: int
+        Number of points in histogram. Default 256.
+
+    Returns
+    -------
+    threshold: float
+
+    '''
+    # number of pts for histogram
+    dl = gwy.DataLine(pts, 0, True)
+    # compute z-scale histogram from image
+    datafield.dh(dl, pts)
+
     # sort out hist data
     dx = dl.get_real()/dl.get_res() # pixel spacing in data line
     offset = dl.get_offset() # dataline offset, ie. 0 index point value in x
