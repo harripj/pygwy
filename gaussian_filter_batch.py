@@ -6,6 +6,7 @@ Created on Tue Nov 13 21:23:05 2018
 """
 
 import gwy
+import math
 from pygwy_functions import get_data_key
 
 plugin_menu = "/Basic Operations/Gaussian Filter Batch..."
@@ -16,7 +17,8 @@ def run():
     # stored app settings
     settings = gwy.gwy_app_settings_get()
     # get sigma from settings, ie. vlaue last used in toolbox->filters
-    sigma = settings['/module/filter/gauss_size']
+    size = settings['/module/filter/gauss_size']
+    sigma = size / (2.*math.sqrt(2.*math.log(2.)))
     # get all containers
     containers = gwy.gwy_app_data_browser_get_containers()
     # save each container as gwy file with file name
