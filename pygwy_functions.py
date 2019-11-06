@@ -14,6 +14,9 @@ for key in dir(gwy):
     if type(val) is gwy.GrainQuantity:
         GRAIN_QUANTITIES[key] = val
 
+# def run():
+#     print('{} ran.'.format(__name__))
+
 # finished sorting grain quantities
 
 # def median_level_batch(container, datafield_id=0, kernel_size=30):
@@ -587,25 +590,22 @@ def threshold_otsu_median(datafield, pts=256):
 
     """
     # number of pts for histogram
-    dl = gwy.DataLine(pts, 0, True)
-    # compute z-scale histogram from image
-    datafield.dh(dl, pts)
+    cdf = gwy.DataLine(pts, 0, True)
+    # compute z-scale CDF from image
+    datafield.cdh(cdf, pts)
 
     # sort all intensity values
     vals = sorted(datafield.get_data())
 
     # sort out hist data
-    dx = dl.get_real() / dl.get_res()  # pixel spacing in data line
-    offset = dl.get_offset()  # dataline offset, ie. 0 index point value in x
+    dx = cdf.get_real() / cdf.get_res()  # pixel spacing in data line
+    offset = cdf.get_offset()  # dataline offset, ie. 0 index point value in x
     x = [(i * dx) + offset for i in range(pts)]  # construct bin locations
 
-    # calculate weights (CDF)
-    cdf = gwy.DataLine(pts, 0, True)
-    datafield.cdh(cdf, pts)
     weight1 = [
         int(round(i * len(vals))) for i in cdf.get_data()
     ]  # get cdf data as list
-    weight2 = [max(weight1) - c for c in weight1[::-1]][::-1]
+    weight2 = [max(weight1) - i for i in weight1[::-1]][::-1]
 
     # class medians for all possible thresholds
     median1 = [vals[: weight1[i]][weight1[i] // 2] for i in range(pts - 1)]
