@@ -602,10 +602,9 @@ def threshold_otsu_median(datafield, pts=256):
     offset = cdf.get_offset()  # dataline offset, ie. 0 index point value in x
     x = [(i * dx) + offset for i in range(pts)]  # construct bin locations
 
-    weight1 = [
-        int(round(i * len(vals))) for i in cdf.get_data()
-    ]  # get cdf data as list
-    weight2 = [max(weight1) - i for i in weight1[::-1]][::-1]
+    # get cdf data as list
+    weight1 = [int(round(i * len(vals))) for i in cdf.get_data()]
+    weight2 = [len(vals) - i for i in weight1[::-1]][::-1]
 
     # class medians for all possible thresholds
     median1 = [vals[: weight1[i]][weight1[i] // 2] for i in range(pts - 1)]
