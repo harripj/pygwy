@@ -1,24 +1,13 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Nov 13 21:23:05 2018
-
-@author: pjh523
-"""
-
 import gwy
-import os
+from pygwy_functions import save_all
 
 plugin_menu = "/Basic Operations/Export All/.gwy"
 plugin_type = "PROCESS"
-plugin_desc = '''Save all open containers as .gwy files.'''
+plugin_desc = """Exports all data in open containers to .gwy in nested folder."""
+
 
 def run():
-    # get all containers
+    # get containers
     containers = gwy.gwy_app_data_browser_get_containers()
-    # save each container as gwy file with file name
-    for c in containers:
-        fname = gwy.gwy_file_get_filename_sys(c)
-        _, ext = os.path.splitext(fname)
 
-        gwy.gwy_file_save(c, fname.replace(ext, '.gwy'), gwy.RUN_NONINTERACTIVE)
+    save_all(containers, format="gwy")
