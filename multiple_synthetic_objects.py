@@ -2,7 +2,10 @@ import gwy
 import gtk
 import random
 
-plugin_menu = "/Synthetic/Deposition/Objects (x10)..."
+# number of synthesised datafields
+nmax = 10
+
+plugin_menu = "/Synthetic/Deposition/Objects (x{})...".format(nmax)
 plugin_desc = "Generates many sythetic datafields."
 plugin_type = "PROCESS"
 
@@ -12,7 +15,7 @@ def run():
 
     settings = gwy.gwy_app_settings_get()
 
-    for n in range(10):
+    for n in range(nmax):
         seed = random.randint(0, 2 ** 32 - 1)  # 32 bit
         settings["/module/obj_synth/seed"] = seed
 
