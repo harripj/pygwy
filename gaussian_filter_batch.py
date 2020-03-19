@@ -7,11 +7,12 @@ Created on Tue Nov 13 21:23:05 2018
 
 import gwy
 import math
-from pygwy_functions import get_data_key, get_gaussian_sigma
+from pygwy_functions import get_gaussian_sigma
 
 plugin_menu = "/Basic Operations/Gaussian Filter Batch..."
 plugin_type = "PROCESS"
-plugin_desc = '''Batch gaussian filter for all open containers. Sigma is as set in Tools->Filters->Gaussian Size'''
+plugin_desc = """Batch gaussian filter for all open containers. Sigma is as set in Tools->Filters->Gaussian Size"""
+
 
 def run():
     # get gauss size from settings, ie. value last used in toolbox->filters
@@ -23,8 +24,8 @@ def run():
         # create checkpoint
         gwy.gwy_app_undo_checkpoint(c, c.keys_by_name())
         # get datafield 0 for each container for func to operate on
-        data = c[get_data_key()]
+        datafield = c[gwy.gwy_app_get_data_key_for_id(0)]
         # do gaussian filter
-        data.filter_gaussian(sigma)
+        datafield.filter_gaussian(sigma)
         # emit signal to container to update UI
-        data.data_changed()
+        datafield.data_changed()

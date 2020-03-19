@@ -7,9 +7,9 @@ Created on Tue Nov 13 21:23:05 2018
 
 import gwy
 
-plugin_menu = "/Level/Revolve Arc Batch..."
+plugin_menu = "/Level/Median Level Batch..."
 plugin_type = "PROCESS"
-plugin_desc = """Revolve arc for all open containers."""
+plugin_desc = """Median lebel background subtraction for all open containers."""
 
 
 def run():
@@ -19,5 +19,5 @@ def run():
     for c in containers:
         # get datafield 0 for each container for func to operate on
         gwy.gwy_app_data_browser_select_data_field(c, 0)
-        gwy.gwy_process_func_run("arc_revolve", c, gwy.RUN_IMMEDIATE)
+        gwy.gwy_process_func_run("median-bg", c, gwy.RUN_IMMEDIATE)
 

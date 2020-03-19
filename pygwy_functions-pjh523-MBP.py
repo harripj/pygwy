@@ -377,10 +377,10 @@ def laplacian_of_gaussian(container, datafield_id=0, add_to_data_browser=True):
 
     # fmt: off
     # 5x5 2d laplacian kernel
-    kernel_laplacian.set_data([0, 0, -1, 0, 0,\
-                               0, -1, -2, -1, 0,\
-                               -1, -2, 16, -2, -1,\
-                               0, -1, -2, -1, 0,\
+    kernel_laplacian.set_data([0, 0, -1, 0, 0, \
+                               0, -1, -2, -1, 0, \
+                               -1, -2, 16, -2, -1, \
+                               0, -1, -2, -1, 0, \
                                0, 0, -1, 0, 0, \
                                ])
     # fmt: on
