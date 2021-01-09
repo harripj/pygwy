@@ -7,7 +7,7 @@ Created on Tue Nov 13 21:23:05 2018
 
 import gwy
 import math
-from pygwy_functions import low_signal_threshold
+from functions.pygwy_functions import low_signal_threshold
 
 plugin_menu = "/Grains/Batch/Low Signal Image..."
 plugin_type = "PROCESS"

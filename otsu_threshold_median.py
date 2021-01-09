@@ -6,7 +6,7 @@ Created on Tue Nov 13 21:23:05 2018
 
 import gwy
 import os
-from pygwy_functions import (
+from functions.pygwy_functions import (
     threshold_otsu_median,
     get_relative_value,
     create_mask,
@@ -27,12 +27,12 @@ def run():
     gwy.gwy_undo_qcheckpoint(container, container.keys())
 
     # get datafield and compute threshold
-    datafield = container.get_object_by_name(gwy.gwy_app_get_data_key_for_id(_id))
+    datafield = container.get_object(gwy.gwy_app_get_data_key_for_id(_id))
     threshold = threshold_otsu_median(datafield)
     # create grain mask
     grains = create_mask(datafield, threshold)
     # add mask field to container
-    container.set_object_by_name(gwy.gwy_app_get_mask_key_for_id(_id), grains)
+    container.set_object(gwy.gwy_app_get_mask_key_for_id(_id), grains)
 
     # set mask colour and opacity
     set_mask_colour(container, _id)

@@ -7,7 +7,7 @@ Created on Tue Nov 13 21:23:05 2018
 
 import gwy
 import math
-from pygwy_functions import get_gaussian_sigma
+from functions.pygwy_functions import get_gaussian_sigma
 
 plugin_menu = "/Basic Operations/Gaussian Filter Batch..."
 plugin_type = "PROCESS"

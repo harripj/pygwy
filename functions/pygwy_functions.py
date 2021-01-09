@@ -79,7 +79,7 @@ def set_mask_colour(container, _id, rgba=(0.75, 0.0, 0.0, 0.5)):
         Values range from 0..1. (Red, Green, Blue, Alpha).
     
     """
-    mask_key = gwy.gwy_app_get_mask_key_for_id(_id)
+    mask_key = gwy.gwy_name_from_key(gwy.gwy_app_get_mask_key_for_id(_id))
     # set mask colour and opacity
     for color, val in zip(("red", "green", "blue", "alpha"), rgba):
         container[os.path.join(mask_key, color)] = val

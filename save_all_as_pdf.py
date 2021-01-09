@@ -1,5 +1,5 @@
 import gwy
-from pygwy_functions import save_all
+from functions.pygwy_functions import save_all
 
 plugin_menu = "/Basic Operations/Export All/.pdf"
 plugin_type = "PROCESS"
